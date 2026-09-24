@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI vs Human: Color Game</title>
+  <meta name="description" content="Mix CMYK to match a target color before a Bayesian Optimization AI does.">
+  <link rel="stylesheet" href="https://pyscript.net/releases/2026.7.3/core.css">
+  <script type="module" src="https://pyscript.net/releases/2026.7.3/core.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>AI vs Human: Color Game</h1>
+      <p class="lede">Mix cyan, magenta, yellow and black to match the target color. Get under
+        <strong>5% error</strong> before the Bayesian Optimization AI does.</p>
+      <details>
+        <summary>How to play</summary>
+        <ul>
+          <li>Adjust the CMYK sliders, then hit <strong>Submit</strong> to make a guess. You only see the color after you submit.</li>
+          <li>Every time you guess, the AI makes one guess too.</li>
+          <li>You and the AI both start with the same 8 random reference colors (at the bottom).</li>
+          <li>No internet help, and no starting a new game to dodge a bad attempt!</li>
+        </ul>
+      </details>
+    </header>
+
+    <div id="loading" class="loading" role="status">
+      <div class="spinner" aria-hidden="true"></div>
+      <p>Loading Python in your browser…<br><small>The first visit can take 10–30 seconds.</small></p>
+    </div>
+
+    <div id="game" hidden>
+      <section class="panel play">
+        <div class="swatch-block">
+          <div class="swatch big" id="target-swatch"></div>
+          <div class="caption">Target<br><span id="target-rgb"></span></div>
+        </div>
+
+        <form id="controls" class="sliders">
+          <label class="slider c">Cyan <output id="c-out">50%</output>
+            <input type="range" id="c" min="0" max="100" value="50"></label>
+          <label class="slider m">Magenta <output id="m-out">50%</output>
+            <input type="range" id="m" min="0" max="100" value="50"></label>
+          <label class="slider y">Yellow <output id="y-out">50%</output>
+            <input type="range" id="y" min="0" max="100" value="50"></label>
+          <label class="slider k">Black <output id="k-out">50%</output>
+            <input type="range" id="k" min="0" max="100" value="50"></label>
+          <button type="submit" id="submit">Submit</button>
+        </form>
+
+        <div class="stats">
+          <div><span class="label">Attempts</span><span id="attempts" class="value">0</span></div>
+          <div><span class="label">Your best</span><span id="best" class="value">–</span></div>
+          <div id="status" class="status" aria-live="polite">Goal: &lt; 5% error before the AI</div>
+          <button type="button" id="new-game" class="secondary">New game</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Your attempts</h2>
+        <div id="user-attempts" class="swatches"><p class="empty">No guesses yet.</p></div>
+      </section>
+
+      <section class="panel">
+        <h2>AI attempts</h2>
+        <div id="ai-attempts" class="swatches"><p class="empty">The AI guesses when you do.</p></div>
+      </section>
+
+      <section class="panel">
+        <h2>Random samples</h2>
+        <div id="random-samples" class="swatches"></div>
+      </section>
+    </div>
+
+    <footer>Written by Austin Martin &amp; Clara Tamura · <a href="https://github.com/futurelab-school/AIvsHuman-Color">Source on GitHub</a></footer>
+  </main>
+
+  <script type="py" src="game.py" config="pyscript.toml"></script>
+  <script src="app.js"></script>
+</body>
+</html>

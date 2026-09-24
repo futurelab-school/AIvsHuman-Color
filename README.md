@@ -2,6 +2,9 @@
 This is for the color mixing game \
 Written by: Austin Martin & Clara Tamura
 
+## Play online
+[Play the game in your browser](https://futurelab-school.github.io/AIvsHuman-Color/) (no install needed; the web version lives in `docs/`).
+
 # Rules
 ### How to Play
 - Adjust the CMYK sliders to match the target color.
