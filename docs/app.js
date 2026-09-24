@@ -9,7 +9,7 @@ let busy = false;
 const rgbCss = ([r, g, b]) => `rgb(${r}, ${g}, ${b})`;
 const pct = (v) => `${Math.round(v * 100)}%`;
 
-function swatchCard(s, label) {
+function swatchCard(s, label, showCmyk = true) {
   const card = document.createElement("div");
   card.className = "card";
   const sw = document.createElement("div");
@@ -18,13 +18,13 @@ function swatchCard(s, label) {
   const cap = document.createElement("div");
   cap.className = "caption";
   const [c, m, y, k] = s.cmyk.map(pct);
-  cap.innerHTML = `${label}<br>C ${c} M ${m}<br>Y ${y} K ${k}` +
+  cap.innerHTML = label + (showCmyk ? `<br>C ${c} M ${m}<br>Y ${y} K ${k}` : "") +
     (s.error != null ? `<br><strong>Error ${s.error.toFixed(1)}%</strong>` : "");
   card.append(sw, cap);
   return card;
 }
 
-function renderList(el, items, labelPrefix, emptyText) {
+function renderList(el, items, labelPrefix, emptyText, showCmyk = true) {
   el.replaceChildren();
   if (!items.length) {
     const p = document.createElement("p");
@@ -33,7 +33,7 @@ function renderList(el, items, labelPrefix, emptyText) {
     el.append(p);
     return;
   }
-  items.forEach((s, i) => el.append(swatchCard(s, `${labelPrefix} ${i + 1}`)));
+  items.forEach((s, i) => el.append(swatchCard(s, `${labelPrefix} ${i + 1}`, showCmyk)));
 }
 
 function render(state) {
@@ -43,7 +43,7 @@ function render(state) {
   $("best").textContent = state.best_error == null ? "–" : `${state.best_error.toFixed(1)}%`;
 
   renderList($("user-attempts"), state.user_attempts, "#", "No guesses yet.");
-  renderList($("ai-attempts"), state.ai_attempts, "#", "The AI guesses when you do.");
+  renderList($("ai-attempts"), state.ai_attempts, "#", "The AI guesses when you do.", false);
   renderList($("random-samples"), state.random_samples, "Sample", "");
 
   const status = $("status");
